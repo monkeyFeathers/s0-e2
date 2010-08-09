@@ -1,3 +1,16 @@
+-- YELPBOT
+
+IRC bot that will search for business reviews on yelp and return the results
+
+== USAGE
+
+!yelp [search term (e.g. bar, bar+pool)] [location (e.g. Portland Or, Paris France)] 
+
+== EXAMPLE
+
+<you>: !yelp bars portland or
+<YelpBot>: Kir, http://www.yelp.com/biz/kir-portland, rated: 5.0 | Lupa, http://www.yelp.com/biz/lupa-portland, rated: 4.5 | The Slingshot Lounge, http://www.yelp.com/biz/the-slingshot-lounge-portland, rated: 4.5
+
 -- RMU ZERO SESSION | PROBLEM 12
 -- Submissions due 12:00 UTC 8/10
 
