@@ -11,6 +11,7 @@ end
 
 on :connect do
   join "#rmu-session-0 zerowing"
+
 end
 
 on :channel, /^!yelp (.*)/ do
@@ -46,7 +47,7 @@ helpers do
   end
   
   def yelpBot_help
-    msg channel, "usage: !yelp [business type (e.g. 'bars')] [location (e.g. 'Portland, OR')]"
+    msg channel, "usage: !yelp [search term (e.g. 'bars' for multiple words use '+' instead of ' ')] [location (e.g. 'Portland, OR')]"
   end
 end
 
@@ -55,7 +56,7 @@ end
 ######################################################################################################
 
 class YelpQuery
-  attr_accessor :term, :location, :category, :query, :results, :refined_results, :output
+  attr_accessor :term, :location, :category, :query, :results, :refined_results, :output, :message
   
   YELP_URI = "http://api.yelp.com/business_review_search?"
   
@@ -93,9 +94,10 @@ class YelpQuery
 
     # Handle bad requests
     # TODO error handling
+    @message = @results["message"]
   end
   
-  def to_irc(limit=3)
+  def process_output(limit=3)
     # process results to be sent to be put in irc
     @refined_results = Array.new
     @results["businesses"].each do |b|
@@ -118,6 +120,19 @@ class YelpQuery
       @output << "#{rr["name"]}, #{rr["mobile_url"]}, rated: #{rr["avg_rating"]}"
     end
     @output = @output.join(" | ")
+  end
+  
+  def handle_response_codes
+    @output = case @message["code"]
+    when 0
+      process_output
+    else
+      "Could not complete request: #{@message["text"]}"
+    end
+  end
+  
+  def to_irc
+    handle_response_codes
   end
   
 end
