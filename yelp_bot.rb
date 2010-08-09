@@ -9,8 +9,21 @@ configure do |c|
   c.server  = "irc.freenode.net"
 end
 
-helpers do
-    
+on :connect do
+  join "#rmu-session-0 zerowing"
+end
+
+on :channel, /^!yelp (.*)/ do
+  #msg channel, "yelp results: #{match[0]}"
+  unless match[0] == "-h"
+    yelp match[0]
+  else
+    yelpBot_help
+  end
+end
+
+
+helpers do 
   def yelp(match_results)
     
     # get rid of commas from my params
@@ -29,7 +42,7 @@ helpers do
     end
     
     # output into irc
-    msg channel, "hello world biz: #{biz}, loc: #{location}, query: #{@yelp_query.query}, results: #{@yelp_query.to_irc}"
+    msg channel, "#{@yelp_query.to_irc}"
   end
   
   def yelpBot_help
@@ -37,25 +50,22 @@ helpers do
   end
 end
 
-on :connect do
-  join "#rmu-session-0 zerowing"
-end
+######################################################################################################
+# Yelp interaction
+######################################################################################################
 
-on :channel, /^!yelp (.*)/ do
-  #msg channel, "yelp results: #{match[0]}"
-  unless match[0] == "-h"
-    yelp match[0]
-  else
-    yelpBot_help
-  end
-end
-
-# TODO parse query to yelp url
 class YelpQuery
   attr_accessor :term, :location, :category, :query, :results, :refined_results, :output
   
   YELP_URI = "http://api.yelp.com/business_review_search?"
-  YWSID = "" # yelp api key goes here
+  
+  ####################################################################################################
+  # yelp api key goes here, they made me promise not to share mine :(
+  #
+  YWSID = "" 
+  #
+  #
+  ######################################################################################################
   
   def self.get(*args, &block)
     yelp = YelpQuery.new
@@ -103,12 +113,11 @@ class YelpQuery
     end
     
     # convert the refined results to final format for to be put into the irc room
-    # @refined_results.each do |rr|
-    #       @output = Array.new
-    #       @output << "#{rr["name"]}, #{rr["mobile_url"]}, rated: #{rr["avg_rating"]}"
-    #     end
-    #     @output = @output.join(" | ")
-    @refined_results.inspect
+    @output = Array.new
+    @refined_results.each do |rr|
+      @output << "#{rr["name"]}, #{rr["mobile_url"]}, rated: #{rr["avg_rating"]}"
+    end
+    @output = @output.join(" | ")
   end
   
 end
