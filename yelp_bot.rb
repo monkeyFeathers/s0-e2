@@ -56,7 +56,7 @@ class YelpQuery
   attr_accessor :term, :location, :category, :query, :results, :refined_results, :output
   
   YELP_URI = "http://api.yelp.com/business_review_search?"
-  YWSID = "5gerYyIQDNNAMWN10ahp4g"
+  YWSID = "" # yelp api key goes here
   
   def self.get(*args, &block)
     yelp = YelpQuery.new
