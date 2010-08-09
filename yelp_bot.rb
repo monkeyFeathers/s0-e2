@@ -10,8 +10,8 @@ configure do |c|
 end
 
 on :connect do
+  puts "Connected"
   join "#rmu-session-0 zerowing"
-
 end
 
 on :channel, /^!yelp (.*)/ do
@@ -117,7 +117,7 @@ class YelpQuery
     # convert the refined results to final format for to be put into the irc room
     @output = Array.new
     @refined_results.each do |rr|
-      @output << "#{rr["name"]}, #{rr["mobile_url"]}, rated: #{rr["avg_rating"]}"
+      @output << "#{rr["name"]}, #{rr["url"]}, rated: #{rr["avg_rating"]}"
     end
     @output = @output.join(" | ")
   end
