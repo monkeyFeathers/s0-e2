@@ -38,8 +38,7 @@ helpers do
 end
 
 on :connect do
-  #join "#rmu-session-0 zerowing"
-  join "#jsq-hello"
+  join "#rmu-session-0 zerowing"
 end
 
 on :channel, /^!yelp (.*)/ do
