@@ -43,7 +43,7 @@ helpers do
     end
     
     # output into irc
-    msg channel, "#{@yelp_query.to_irc}"
+    msg channel, "#{nick}: #{@yelp_query.to_irc}"
   end
   
   def yelpBot_help
