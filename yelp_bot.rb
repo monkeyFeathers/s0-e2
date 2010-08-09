@@ -103,7 +103,7 @@ class YelpQuery
     @results["businesses"].each do |b|
       h = Hash.new
       h["name"]        = b["name"]
-      h["mobile_url"]  = b["mobile_url"]
+      h["url"]  = b["url"]
       h["avg_rating"]  = b["avg_rating"]
       
       # constrain the number of businesses shown
